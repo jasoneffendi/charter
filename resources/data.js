@@ -27,6 +27,7 @@ export default {
     {index: 1993, value: 60.92},
     {index: 1992, value: 80.80},
     {index: 1991, value: 80.80},
+    {index: 1990, value: 80.80},
   ],
 
   spendingsLastMonth: [

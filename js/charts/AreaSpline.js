@@ -63,7 +63,7 @@ class AreaSpline extends React.Component {
   _Yvalue(item, index) { return -item.value; }
 
   //TODO: expose this methods as part of the AreaSpline interface.
-  _Xvalue(item, index) { return index*this.barWidth; }
+  _Xvalue(item, index) { return this.props.width - index*this.barWidth; }
 
   //TODO: expose this methods as part of the AreaSpline interface.
   _label(item, index) { return item.name; }
