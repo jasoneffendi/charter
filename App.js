@@ -1,57 +1,85 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
+// @flow
+'use strict';
 
 import React, { Component } from 'react';
 import {
-  Platform,
   StyleSheet,
   Text,
-  View
+  ScrollView,
+  TouchableWithoutFeedback,
+  View,
 } from 'react-native';
 
-const instructions = Platform.select({
-  ios: 'Press Cmd+R to reload,\n' +
-    'Cmd+D or shake for dev menu',
-  android: 'Double tap R on your keyboard to reload,\n' +
-    'Shake or press menu button for dev menu',
-});
+import AreaSpline from './js/charts/AreaSpline';
+import Pie from './js/charts/Pie';
+import Theme from './js/theme';
+import data from './resources/data';
 
-export default class App extends Component<{}> {
+export default class App extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      activeIndex: 0,
+      spendingsPerYear: data.spendingsPerYear,
+    };
+    this._onPieItemSelected = this._onPieItemSelected.bind(this);
+    this._shuffle = this._shuffle.bind(this);
+  }
+
+  _onPieItemSelected(newIndex){
+    this.setState({...this.state, activeIndex: newIndex, spendingsPerYear: this._shuffle(data.spendingsPerYear)});
+  }
+
+  _shuffle(a) {
+      for (let i = a.length; i; i--) {
+          let j = Math.floor(Math.random() * i);
+          [a[i - 1], a[j]] = [a[j], a[i - 1]];
+      }
+      return a;
+  }
+
   render() {
+    const height = 200;
+    const width = 500;
+
     return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit App.js
-        </Text>
-        <Text style={styles.instructions}>
-          {instructions}
-        </Text>
-      </View>
+      <ScrollView>
+        <View style={styles.container} >
+          <Text style={styles.chart_title}>Distribution of spending this month</Text>
+          <Pie
+            pieWidth={150}
+            pieHeight={150}
+            onItemSelected={this._onPieItemSelected}
+            colors={Theme.colors}
+            width={width}
+            height={height}
+            data={data.spendingsLastMonth} />
+          <Text style={styles.chart_title}>Spending per year in {data.spendingsLastMonth[this.state.activeIndex].name}</Text>
+          <AreaSpline
+            width={width}
+            height={height}
+            data={this.state.spendingsPerYear}
+            color={Theme.colors[this.state.activeIndex]} />
+        </View>
+      </ScrollView>
     );
   }
 }
 
-const styles = StyleSheet.create({
+const styles = {
   container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+    backgroundColor:'whitesmoke',
+    marginTop: 21,
   },
-  welcome: {
-    fontSize: 20,
+  chart_title : {
+    paddingTop: 15,
     textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
-});
+    paddingBottom: 5,
+    paddingLeft: 5,
+    fontSize: 18,
+    backgroundColor:'white',
+    color: 'grey',
+    fontWeight:'bold',
+  }
+}
