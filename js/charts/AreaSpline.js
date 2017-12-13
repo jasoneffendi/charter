@@ -7,6 +7,7 @@ import {
   Text,
   View,
   ART,
+  Dimensions
 } from 'react-native';
 
 const {
@@ -44,7 +45,7 @@ type Props = {
   data: any
 };
 
-const margin = 20;
+const margin = 0;
 const AnimationDurationMs = 250;
 
 class AreaSpline extends React.Component {
@@ -55,13 +56,14 @@ class AreaSpline extends React.Component {
     this._Xvalue = this._Xvalue.bind(this);
     this._Yvalue = this._Yvalue.bind(this);
     this._label = this._label.bind(this);
+    this.barWidth = this.props.width/this.props.data.length
   }
 
   //TODO: expose this methods as part of the AreaSpline interface.
   _Yvalue(item, index) { return -item.value; }
 
   //TODO: expose this methods as part of the AreaSpline interface.
-  _Xvalue(item, index) { return index*15; }
+  _Xvalue(item, index) { return index*this.barWidth; }
 
   //TODO: expose this methods as part of the AreaSpline interface.
   _label(item, index) { return item.name; }

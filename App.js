@@ -8,6 +8,7 @@ import {
   ScrollView,
   TouchableWithoutFeedback,
   View,
+  Dimensions
 } from 'react-native';
 
 import AreaSpline from './js/charts/AreaSpline';
@@ -41,7 +42,7 @@ export default class App extends Component {
 
   render() {
     const height = 200;
-    const width = 500;
+    const width = Dimensions.get('window').width;
 
     return (
       <ScrollView>
